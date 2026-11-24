@@ -48,7 +48,9 @@ function supplyLabel(asset: MediaAsset): string | null {
 
 const categoryLabel = (id: string) => CATEGORIES.find((c) => c.id === id)?.label ?? id;
 
-export function MediaKit() {
+const NO_FILLS: Readonly<Record<string, number>> = {};
+
+export function MediaKit({ fills = NO_FILLS }: { fills?: Readonly<Record<string, number>> }) {
   const [channels, setChannels] = useState<ChannelId[]>(CHANNELS.map((c) => c.id));
   const [statuses, setStatuses] = useState<AssetStatus[]>(["exists", "ready", "careful", "never"]);
   const visible = ASSETS.filter((a) => channels.includes(a.channel) && statuses.includes(a.status));
@@ -100,7 +102,7 @@ export function MediaKit() {
                         <StatusTag status={asset.status} />
                       </div>
                       {asset.status !== "never" ? (
-                        <dl className="grid grid-cols-2 gap-3 text-sm">
+                        <dl className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
                           <div className="flex flex-col">
                             <dt className="eyebrow">Price</dt>
                             <dd className="num font-mono">{priceLabel(asset.pricing)}</dd>
@@ -108,6 +110,20 @@ export function MediaKit() {
                           <div className="flex flex-col">
                             <dt className="eyebrow">Supply</dt>
                             <dd className="num font-mono">{supply}</dd>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <dt className="eyebrow">Sold this week</dt>
+                            <dd className="flex items-center gap-2">
+                              <span className="h-1.5 w-14 overflow-hidden rounded-full bg-surface-2">
+                                <span
+                                  className="block h-full rounded-full bg-accent"
+                                  style={{ width: `${(fills[asset.id] ?? 0) * 100}%` }}
+                                />
+                              </span>
+                              <span className="num font-mono text-xs">
+                                {Math.round((fills[asset.id] ?? 0) * 100)}%
+                              </span>
+                            </dd>
                           </div>
                         </dl>
                       ) : null}

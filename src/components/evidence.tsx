@@ -22,7 +22,7 @@ export function KindTag({ kind }: { kind: EvidenceKind }) {
 export function EvidenceLink({ id }: { id: AssumptionId }) {
   const item = ASSUMPTIONS[id];
   return (
-    <Link href={`/sources#a-${id}`} className="inline-flex" title={item.note}>
+    <Link href={`/about/sources#a-${id}`} className="inline-flex" title={item.note}>
       <KindTag kind={item.kind} />
     </Link>
   );

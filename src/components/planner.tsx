@@ -291,7 +291,7 @@ export function Planner() {
   );
 }
 
-function ReviewResult({ result }: { result: Reply<CreativeReview> | null }) {
+export function ReviewResult({ result }: { result: Reply<CreativeReview> | null }) {
   if (!result) return null;
   if (result.kind !== "ok") {
     return (
@@ -340,7 +340,7 @@ function ReviewResult({ result }: { result: Reply<CreativeReview> | null }) {
   );
 }
 
-function PlanView({ plan }: { plan: Plan | { kind: "invalid"; message: string } }) {
+export function PlanView({ plan }: { plan: Plan | { kind: "invalid"; message: string } }) {
   if (plan.kind === "invalid") {
     return <p className="rounded-md bg-amber-soft px-3 py-2 text-sm text-amber">{plan.message}</p>;
   }

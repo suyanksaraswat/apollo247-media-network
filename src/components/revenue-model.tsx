@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { REVENUE_SERIES, RevenueChart } from "@/components/charts/revenue-chart";
+import { CHANNEL_SERIES, StackedBarChart } from "@/components/charts/stacked-bar-chart";
 import { EvidenceLink, KindTag } from "@/components/evidence";
 import { NumberField, Segmented } from "@/components/fields";
 import { formatINR } from "@/packages/format";
@@ -125,7 +125,20 @@ export function RevenueModel() {
               {formatINR(total)}
             </span>
           </div>
-          <RevenueChart years={result.years} yearLabels={YEARS} />
+          <StackedBarChart
+            showTotals
+            ariaLabel="Media revenue by year and line"
+            bars={result.years.map((year, index) => ({
+              label: YEARS[index] ?? "",
+              values: {
+                app: year.app,
+                stores: year.stores,
+                doorstep: year.doorstep,
+                insights: year.insights,
+              },
+              total: year.total,
+            }))}
+          />
         </div>
         <div className="flex min-w-0 flex-col gap-4">
           <div className="overflow-x-auto rounded-xl border border-line bg-surface">
@@ -141,7 +154,7 @@ export function RevenueModel() {
                 </tr>
               </thead>
               <tbody>
-                {REVENUE_SERIES.map((series) => (
+                {CHANNEL_SERIES.map((series) => (
                   <tr key={series.key} className="border-t border-line">
                     <td className="px-3 py-2">
                       <span className="flex items-center gap-1.5">

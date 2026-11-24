@@ -196,7 +196,7 @@ export default function PlanPage() {
           <span className="num font-medium text-ink">{formatPct(mde)}</span>. Store screens alone
           bring in {formatINR(pilotStoreMedia)} per brand at rate-card prices; the pilot is for
           proof, not revenue.{" "}
-          <Link href="/pilot" className="text-accent underline underline-offset-2">
+          <Link href="/pilots" className="text-accent underline underline-offset-2">
             Change the design
           </Link>
         </p>

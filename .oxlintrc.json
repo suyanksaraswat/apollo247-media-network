@@ -34,7 +34,8 @@
     "react-perf/jsx-no-new-function-as-prop": "off",
     "react-perf/jsx-no-new-object-as-prop": "off",
     "react-perf/jsx-no-new-array-as-prop": "off",
-    "typescript/consistent-return": "off"
+    "typescript/consistent-return": "off",
+    "react-perf/jsx-no-jsx-as-prop": "off"
   },
   "env": {
     "browser": true,

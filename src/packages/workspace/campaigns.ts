@@ -1,0 +1,296 @@
+import type {
+  CategoryId,
+  CityId,
+  CreativeReview,
+  ObjectiveId,
+  ProductClassId,
+} from "@/packages/catalog/types";
+
+export type CampaignStatus =
+  "draft" | "in_review" | "scheduled" | "live" | "completed" | "rejected";
+
+export interface Campaign {
+  id: string;
+  name: string;
+  brand: string;
+  category: CategoryId;
+  productClass: ProductClassId;
+  objective: ObjectiveId;
+  cities: CityId[];
+  budgetINR: number;
+  weeks: number;
+  startDate: string;
+  status: CampaignStatus;
+  creativeLines: string[];
+  review: CreativeReview | null;
+  note: string | null;
+  simulation: { trueLift: number; marketTrend: number } | null;
+}
+
+export const DEMO_TODAY = "2026-11-24";
+
+export const STATUS_LABELS: Record<CampaignStatus, string> = {
+  draft: "Draft",
+  in_review: "In review",
+  scheduled: "Scheduled",
+  live: "Live",
+  completed: "Completed",
+  rejected: "Rejected",
+};
+
+const OK: CreativeReview = { verdict: "ok", issues: [] };
+
+export const CAMPAIGNS: readonly Campaign[] = [
+  {
+    id: "bearly-winter-immunity",
+    name: "Winter immunity",
+    brand: "Bearly Gummies",
+    category: "nutrition",
+    productClass: "fmcg",
+    objective: "trial",
+    cities: ["pune", "bengaluru"],
+    budgetINR: 1_800_000,
+    weeks: 4,
+    startDate: "2026-11-09",
+    status: "live",
+    creativeLines: ["Gummies kids actually ask for."],
+    review: OK,
+    note: null,
+    simulation: { trueLift: 0.1, marketTrend: 0.05 },
+  },
+  {
+    id: "glucora-glucose-check",
+    name: "Glucose check season",
+    brand: "Glucora",
+    category: "devices",
+    productClass: "device",
+    objective: "sales",
+    cities: ["bengaluru", "mumbai", "delhi_ncr"],
+    budgetINR: 4_000_000,
+    weeks: 8,
+    startDate: "2026-10-26",
+    status: "live",
+    creativeLines: ["Clear readings in seconds. Ask at the counter."],
+    review: OK,
+    note: "The brand asked to reach insulin buyers. That was refused; the plan runs on the diabetes-care shelf, counters and order screens instead.",
+    simulation: { trueLift: 0.08, marketTrend: 0.02 },
+  },
+  {
+    id: "calcibloom-forty-plus",
+    name: "Calcium after 40",
+    brand: "Calcibloom",
+    category: "nutrition",
+    productClass: "fmcg",
+    objective: "loyalty",
+    cities: ["hyderabad", "chennai", "bengaluru", "mumbai"],
+    budgetINR: 3_000_000,
+    weeks: 8,
+    startDate: "2026-10-12",
+    status: "live",
+    creativeLines: ["Strong bones after 40 start with breakfast."],
+    review: OK,
+    note: null,
+    simulation: { trueLift: 0.07, marketTrend: 0 },
+  },
+  {
+    id: "clearleaf-diwali-glow",
+    name: "Diwali glow",
+    brand: "Clearleaf",
+    category: "personal_care",
+    productClass: "fmcg",
+    objective: "sales",
+    cities: ["delhi_ncr", "kolkata"],
+    budgetINR: 900_000,
+    weeks: 3,
+    startDate: "2026-10-12",
+    status: "completed",
+    creativeLines: ["Festive skin, without the fuss."],
+    review: OK,
+    note: null,
+    simulation: { trueLift: 0.06, marketTrend: 0.04 },
+  },
+  {
+    id: "saltwell-navratri-energy",
+    name: "Navratri energy",
+    brand: "Saltwell",
+    category: "fmcg_food",
+    productClass: "fmcg",
+    objective: "trial",
+    cities: ["ahmedabad", "mumbai"],
+    budgetINR: 1_400_000,
+    weeks: 4,
+    startDate: "2026-09-21",
+    status: "completed",
+    creativeLines: ["Nine nights of garba, one bottle at a time."],
+    review: OK,
+    note: null,
+    simulation: { trueLift: 0.09, marketTrend: 0.06 },
+  },
+  {
+    id: "bearly-back-to-school",
+    name: "Back to school",
+    brand: "Bearly Gummies",
+    category: "nutrition",
+    productClass: "fmcg",
+    objective: "trial",
+    cities: ["bengaluru", "chennai"],
+    budgetINR: 1_100_000,
+    weeks: 4,
+    startDate: "2026-08-31",
+    status: "completed",
+    creativeLines: ["A gummy a day for the school run."],
+    review: OK,
+    note: null,
+    simulation: { trueLift: 0.1, marketTrend: 0.03 },
+  },
+  {
+    id: "ninefold-opd-monsoon",
+    name: "OPD cover, monsoon",
+    brand: "Ninefold Insurance",
+    category: "insurance",
+    productClass: "service",
+    objective: "awareness",
+    cities: ["bengaluru", "mumbai", "delhi_ncr", "chennai", "hyderabad", "kolkata"],
+    budgetINR: 1_500_000,
+    weeks: 4,
+    startDate: "2026-07-06",
+    status: "completed",
+    creativeLines: ["Cover for every doctor visit this monsoon."],
+    review: OK,
+    note: null,
+    simulation: { trueLift: 0.06, marketTrend: 0.08 },
+  },
+  {
+    id: "saltwell-summer-launch",
+    name: "Summer launch",
+    brand: "Saltwell",
+    category: "fmcg_food",
+    productClass: "fmcg",
+    objective: "trial",
+    cities: ["hyderabad", "chennai"],
+    budgetINR: 2_500_000,
+    weeks: 6,
+    startDate: "2026-04-06",
+    status: "completed",
+    creativeLines: ["Helps you rehydrate on hot days."],
+    review: OK,
+    note: "The first line, “Guaranteed to cure dehydration in minutes”, was flagged as a cure claim and rewritten before launch.",
+    simulation: { trueLift: 0.11, marketTrend: 0.12 },
+  },
+  {
+    id: "pebble-switch",
+    name: "Switch to Pebble",
+    brand: "Pebble Baby",
+    category: "baby",
+    productClass: "fmcg",
+    objective: "trial",
+    cities: ["hyderabad", "kolkata"],
+    budgetINR: 2_000_000,
+    weeks: 5,
+    startDate: "2026-11-30",
+    status: "scheduled",
+    creativeLines: ["Softer on skin, from the first night."],
+    review: OK,
+    note: null,
+    simulation: null,
+  },
+  {
+    id: "soothera-winter-throat",
+    name: "Winter throat care",
+    brand: "Soothera",
+    category: "otc",
+    productClass: "otc",
+    objective: "sales",
+    cities: ["chennai", "hyderabad"],
+    budgetINR: 1_200_000,
+    weeks: 6,
+    startDate: "2026-12-07",
+    status: "in_review",
+    creativeLines: ["Cures a sore throat overnight.", "Doctors' first choice for winter."],
+    review: {
+      verdict: "revise",
+      issues: [
+        {
+          quote: "Cures a sore throat overnight",
+          rule: "cure_claim",
+          problem: "Presents a lozenge as a cure, with a promised time.",
+          rewrite: "Soothes a scratchy throat.",
+        },
+        {
+          quote: "Doctors' first choice",
+          rule: "unsupported_superlative",
+          problem: "Claims doctors prefer it without proof.",
+          rewrite: "Made with honey and menthol.",
+        },
+      ],
+    },
+    note: null,
+    simulation: null,
+  },
+  {
+    id: "strideup-new-year",
+    name: "New year, new stride",
+    brand: "Strideup Fitness",
+    category: "fitness",
+    productClass: "service",
+    objective: "awareness",
+    cities: ["mumbai", "pune", "bengaluru"],
+    budgetINR: 1_000_000,
+    weeks: 4,
+    startDate: "2026-12-28",
+    status: "in_review",
+    creativeLines: ["Start the year one stride at a time."],
+    review: OK,
+    note: null,
+    simulation: null,
+  },
+  {
+    id: "clearleaf-winter-barrier",
+    name: "Winter skin barrier",
+    brand: "Clearleaf",
+    category: "personal_care",
+    productClass: "fmcg",
+    objective: "sales",
+    cities: ["delhi_ncr", "kolkata"],
+    budgetINR: 800_000,
+    weeks: 4,
+    startDate: "2027-01-04",
+    status: "draft",
+    creativeLines: [],
+    review: null,
+    note: null,
+    simulation: null,
+  },
+  {
+    id: "amoxiva-launch",
+    name: "Antibiotic launch",
+    brand: "Amoxiva",
+    category: "otc",
+    productClass: "rx",
+    objective: "sales",
+    cities: ["hyderabad", "chennai", "bengaluru", "mumbai"],
+    budgetINR: 1_000_000,
+    weeks: 4,
+    startDate: "2026-12-14",
+    status: "rejected",
+    creativeLines: ["Beat infections fast."],
+    review: {
+      verdict: "refuse",
+      issues: [
+        {
+          quote: "Beat infections fast.",
+          rule: "rx_promotion",
+          problem:
+            "Prescription medicines are not advertised to the public. They are promoted only to doctors, which is outside this network.",
+          rewrite: "No consumer ad is possible for this product.",
+        },
+      ],
+    },
+    note: "Rejected automatically: a prescription antibiotic cannot run consumer media.",
+    simulation: null,
+  },
+];
+
+export function campaignById(id: string): Campaign | undefined {
+  return CAMPAIGNS.find((campaign) => campaign.id === id);
+}

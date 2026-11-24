@@ -61,7 +61,7 @@ The app works without a Gemini key: the planner falls back to cached answers for
 
 A Husky pre-commit hook runs lint-staged (Prettier and Oxlint on staged files), then `pnpm typecheck` and `pnpm test`.
 
-Two Oxlint rules are switched off on purpose. `react-perf/jsx-no-new-*-as-prop` flags every inline event handler, which only matters for components wrapped in `React.memo`, and none are. `typescript/consistent-return` flags exhaustive `switch` statements that TypeScript already proves return on every path.
+Two Oxlint rules are switched off on purpose. `react-perf/jsx-no-new-*-as-prop` and `react-perf/jsx-no-jsx-as-prop` flag every inline event handler and every element passed as a prop, which only matters for components wrapped in `React.memo`, and none are. `typescript/consistent-return` flags exhaustive `switch` statements that TypeScript already proves return on every path.
 
 ## Layout
 

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Schibsted_Grotesk } from "next/font/google";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { AppShell } from "@/components/app-shell";
+import { CAMPAIGNS } from "@/packages/workspace/campaigns";
 import "./globals.css";
 
 const display = Schibsted_Grotesk({
@@ -32,12 +32,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en-IN" className={`${display.variable} ${text.variable} ${mono.variable}`}>
-      <body className="flex min-h-dvh flex-col bg-bg font-sans text-[15px] leading-relaxed text-ink antialiased">
-        <SiteHeader />
-        <main className="mx-auto w-full max-w-6xl flex-1 px-[max(1rem,env(safe-area-inset-left))] py-8 sm:py-12">
+      <body className="bg-bg font-sans text-[14.5px] leading-relaxed text-ink antialiased">
+        <AppShell approvals={CAMPAIGNS.filter((c) => c.status === "in_review").length}>
           {children}
-        </main>
-        <SiteFooter />
+        </AppShell>
       </body>
     </html>
   );
