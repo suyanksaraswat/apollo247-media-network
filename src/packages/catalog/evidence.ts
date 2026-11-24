@@ -1,0 +1,353 @@
+import type { Assumption, AssumptionId, Fact, Source } from "./types";
+
+const ACCESSED = "2026-11-23";
+
+export const SOURCES: readonly Source[] = [
+  {
+    id: "fy26_results",
+    label: "Apollo Hospitals Enterprise Q4 and full year FY26 earnings update",
+    publisher: "Investywise",
+    url: "https://www.investywise.com/?p=90267",
+    accessed: ACCESSED,
+  },
+  {
+    id: "q4fy26_imt",
+    label: "Apollo Hospitals posts strong Q4FY26 growth",
+    publisher: "IndiaMedToday",
+    url: "https://indiamedtoday.com/apollo-hospitals-posts-strong-q4fy26-growth/",
+    accessed: ACCESSED,
+  },
+  {
+    id: "q3fy26_call",
+    label: "Q3 FY26 earnings call transcript",
+    publisher: "Apollo Hospitals",
+    url: "https://www.apollohospitals.com/sites/default/files/2026-02/transcript-of-ahel-q3fy26-concall_11feb2026.pdf",
+    accessed: ACCESSED,
+  },
+  {
+    id: "bs_7000",
+    label: "Apollo Pharmacy crosses 7,000 stores",
+    publisher: "Business Standard",
+    url: "https://www.business-standard.com/companies/news/apollo-pharmacy-expansion-7000-stores-network-125112800825_1.html",
+    accessed: ACCESSED,
+  },
+  {
+    id: "osmos",
+    label: "Ad sales services, with Apollo 24|7 among clients (vendor's own claims)",
+    publisher: "Osmos",
+    url: "https://www.osmos.ai/platform/prof-services/ad-sales",
+    accessed: ACCESSED,
+  },
+  {
+    id: "e4m_2025",
+    label: "e4m Report Card 2025: how retail media took over Indian advertising spend plans",
+    publisher: "exchange4media",
+    url: "https://www.exchange4media.com/digital-news/e4m-report-card-2025-how-retail-media-took-over-indian-advertising-spend-plans-150385.html",
+    accessed: ACCESSED,
+  },
+  {
+    id: "itv_8bn",
+    label: "India's retail media market to reach $8.1 billion by 2031",
+    publisher: "Indian Television",
+    url: "https://indiantelevision.com/mam/indias-retail-media-market-to-reach-8-1-billion-by-2031-report/",
+    accessed: ACCESSED,
+  },
+  {
+    id: "onemg_ads",
+    label: "Tata 1mg ad partners",
+    publisher: "Tata 1mg",
+    url: "https://adpartners.1mg.com",
+    accessed: ACCESSED,
+  },
+  {
+    id: "onemg_mediakit",
+    label: "Tata 1mg media deck 2025",
+    publisher: "The Media Ant",
+    url: "https://tma-live.s3.ap-south-1.amazonaws.com/media/tata-1mg-advertising/media-kit-Media%20Deck%202025.pdf",
+    accessed: ACCESSED,
+  },
+  {
+    id: "mediaant_joyra",
+    label: "In-store screen at a medical shop, ₹5,800 a month",
+    publisher: "The Media Ant",
+    url: "https://www.themediaant.com/nontraditional/joyra-medical-advertising",
+    accessed: ACCESSED,
+  },
+  {
+    id: "mediaant_mira",
+    label: "Screens in medical and general stores, ₹1,100 a store a month",
+    publisher: "The Media Ant",
+    url: "https://www.themediaant.com/nontraditional/medical-general-store-mira-bhayandar-advertising",
+    accessed: ACCESSED,
+  },
+  {
+    id: "criteo_bmi",
+    label: "India shifts from testbed to ROI growth engine in retail media, says Criteo leadership",
+    publisher: "Best Media Info",
+    url: "https://bestmediainfo.com/mediainfo/mediainfo-digital/india-shifts-from-testbed-to-roi-growth-engine-in-retail-media-says-criteo-leadership-9687384",
+    accessed: ACCESSED,
+  },
+];
+
+const STORES = 7289;
+const HEALTHCO_REVENUE_CR = 10808;
+const AVG_BILL = 550;
+const WEEKS_PER_MONTH = 52 / 12;
+const REVENUE_PER_STORE_MONTH = Math.round((HEALTHCO_REVENUE_CR * 1e7) / STORES / 12 / 1000) * 1000;
+const WEEKLY_BILLS_PER_STORE = Math.round(REVENUE_PER_STORE_MONTH / AVG_BILL / WEEKS_PER_MONTH);
+
+export const ASSUMPTIONS: Readonly<Record<AssumptionId, Assumption>> = {
+  stores: {
+    id: "stores",
+    label: "Apollo Pharmacy stores",
+    value: STORES,
+    unit: "stores",
+    kind: "sourced",
+    sourceIds: ["fy26_results", "q4fy26_imt"],
+    note: "Operating stores on 31 March 2026.",
+  },
+  registeredUsers: {
+    id: "registeredUsers",
+    label: "Apollo 24|7 registered users",
+    value: 46_000_000,
+    unit: "users",
+    kind: "sourced",
+    sourceIds: ["q3fy26_call"],
+    note: "Over 46 million, from the Q3 FY26 earnings call.",
+  },
+  onlineGmvCr: {
+    id: "onlineGmvCr",
+    label: "Apollo 24|7 GMV, FY26",
+    value: 2037,
+    unit: "₹ crore a year",
+    kind: "sourced",
+    sourceIds: ["fy26_results"],
+    note: "Full-year FY26. Quarterly platform GMV in the calls uses a wider definition.",
+  },
+  gmvGrowth: {
+    id: "gmvGrowth",
+    label: "Online GMV growth",
+    value: 0.25,
+    unit: "a year",
+    kind: "placeholder",
+    sourceIds: [],
+    note: "Set at the low end of the 25–30% growth target reported for FY26.",
+  },
+  dailyOrders: {
+    id: "dailyOrders",
+    label: "Orders a day",
+    value: 69_000,
+    unit: "orders",
+    kind: "sourced",
+    sourceIds: ["fy26_results"],
+    note: "Average across pharmacy, diagnostics and consultations in Q4 FY26.",
+  },
+  healthcoRevenueCr: {
+    id: "healthcoRevenueCr",
+    label: "Apollo HealthCo revenue, FY26",
+    value: HEALTHCO_REVENUE_CR,
+    unit: "₹ crore",
+    kind: "sourced",
+    sourceIds: ["fy26_results"],
+    note: "Offline and online pharmacy together.",
+  },
+  revenuePerStoreMonth: {
+    id: "revenuePerStoreMonth",
+    label: "Revenue per store a month",
+    value: REVENUE_PER_STORE_MONTH,
+    unit: "₹",
+    kind: "derived",
+    sourceIds: ["fy26_results"],
+    note: "HealthCo revenue ÷ stores ÷ 12. A little high for stores alone, because it includes online.",
+  },
+  avgBillINR: {
+    id: "avgBillINR",
+    label: "Average store bill",
+    value: AVG_BILL,
+    unit: "₹",
+    kind: "placeholder",
+    sourceIds: [],
+    note: "To calibrate with store billing data.",
+  },
+  weeklyBillsPerStore: {
+    id: "weeklyBillsPerStore",
+    label: "Bills per store a week",
+    value: WEEKLY_BILLS_PER_STORE,
+    unit: "bills",
+    kind: "derived",
+    sourceIds: ["fy26_results"],
+    note: "Revenue per store a month ÷ average bill ÷ 4.33 weeks.",
+  },
+  sessionsPerOrder: {
+    id: "sessionsPerOrder",
+    label: "App sessions per order",
+    value: 8,
+    unit: "sessions",
+    kind: "placeholder",
+    sourceIds: [],
+    note: "To calibrate with app analytics.",
+  },
+  homeDeliveryShare: {
+    id: "homeDeliveryShare",
+    label: "Orders delivered to a home",
+    value: 0.7,
+    unit: "share of orders",
+    kind: "placeholder",
+    sourceIds: [],
+    note: "The rest are consultations, lab bookings and store pickups.",
+  },
+  consultShare: {
+    id: "consultShare",
+    label: "Orders that are teleconsults",
+    value: 0.05,
+    unit: "share of orders",
+    kind: "placeholder",
+    sourceIds: [],
+    note: "To calibrate with consultation volumes.",
+  },
+  storesWithScreens: {
+    id: "storesWithScreens",
+    label: "Stores with a screen in year one",
+    value: 2000,
+    unit: "stores",
+    kind: "placeholder",
+    sourceIds: [],
+    note: "The busiest stores first.",
+  },
+  screenRateMonthly: {
+    id: "screenRateMonthly",
+    label: "Screen rate per store a month",
+    value: 5000,
+    unit: "₹",
+    kind: "sourced",
+    sourceIds: ["mediaant_joyra", "mediaant_mira"],
+    note: "Single pharmacy screens are listed at ₹1,100 to ₹5,800 a month. A chain-wide network is priced near the top.",
+  },
+  otherInStoreMonthly: {
+    id: "otherInStoreMonthly",
+    label: "Endcaps, counters, bags and bills per store a month",
+    value: 3000,
+    unit: "₹",
+    kind: "placeholder",
+    sourceIds: [],
+    note: "Sold as a package with the screen.",
+  },
+  takeRateAnchor: {
+    id: "takeRateAnchor",
+    label: "Ad revenue as a share of online GMV",
+    value: 0.015,
+    unit: "share of GMV",
+    kind: "placeholder",
+    sourceIds: ["criteo_bmi"],
+    note: "Criteo's India leadership cites 6–8% for Amazon-type networks and 1–2% for others. The model starts at 1.5%.",
+  },
+  optedInMessagingMonthly: {
+    id: "optedInMessagingMonthly",
+    label: "Customers opted in to brand offers",
+    value: 2_000_000,
+    unit: "customers",
+    kind: "placeholder",
+    sourceIds: [],
+    note: "Messaged at most twice a month.",
+  },
+  screenCapexPerStore: {
+    id: "screenCapexPerStore",
+    label: "Screen cost per store",
+    value: 35_000,
+    unit: "₹",
+    kind: "placeholder",
+    sourceIds: [],
+    note: "Screen, mount and media player.",
+  },
+  weeklySalesNoiseCV: {
+    id: "weeklySalesNoiseCV",
+    label: "Week-to-week swing in a brand's store sales",
+    value: 0.25,
+    unit: "coefficient of variation",
+    kind: "placeholder",
+    sourceIds: [],
+    note: "To calibrate with a year of store sales before the pilot.",
+  },
+};
+
+export function assumption(id: AssumptionId): number {
+  return ASSUMPTIONS[id].value;
+}
+
+export const FACTS: readonly Fact[] = [
+  {
+    id: "stores",
+    value: "7,289",
+    label: "Apollo Pharmacy stores",
+    detail: "Operating on 31 March 2026, up 663 in a year.",
+    sourceIds: ["fy26_results", "q4fy26_imt"],
+  },
+  {
+    id: "users",
+    value: "46M+",
+    label: "Registered users on Apollo 24|7",
+    detail: "From the Q3 FY26 earnings call.",
+    sourceIds: ["q3fy26_call"],
+  },
+  {
+    id: "gmv",
+    value: "₹2,037 cr",
+    label: "Apollo 24|7 GMV in FY26",
+    detail: "Online pharmacy, diagnostics and consultations.",
+    sourceIds: ["fy26_results"],
+  },
+  {
+    id: "orders",
+    value: "~69,000",
+    label: "Orders a day",
+    detail: "Across pharmacy, diagnostics and consultations, Q4 FY26.",
+    sourceIds: ["fy26_results"],
+  },
+  {
+    id: "osmos",
+    value: "Osmos",
+    label: "Runs Apollo 24|7's sponsored product ads",
+    detail: "Osmos lists Apollo 24|7 as a client and quotes its brand partnerships team.",
+    sourceIds: ["osmos"],
+  },
+  {
+    id: "healthco",
+    value: "₹10,808 cr",
+    label: "Apollo HealthCo revenue, FY26",
+    detail: "Up 19% on the year.",
+    sourceIds: ["fy26_results"],
+  },
+  {
+    id: "market",
+    value: "₹24,000 cr",
+    label: "Retail media in India, 2025",
+    detail: "WPP Media's estimate, growing over 26% a year.",
+    sourceIds: ["e4m_2025"],
+  },
+  {
+    id: "market2031",
+    value: "$8.1B",
+    label: "India retail media by 2031",
+    detail: "MPA forecast, up from $3.1B in 2025.",
+    sourceIds: ["itv_8bn"],
+  },
+  {
+    id: "onemg",
+    value: "Tata 1mg",
+    label: "Sells ads through its own programme",
+    detail:
+      "Sponsored products on a cost-per-click basis, plus content, YouTube and push or WhatsApp nudges in its 2025 media kit.",
+    sourceIds: ["onemg_ads", "onemg_mediakit"],
+  },
+  {
+    id: "screens",
+    value: "₹1,100–5,800",
+    label: "Pharmacy screen listings, per screen a month",
+    detail: "Listed rates for single medical shops.",
+    sourceIds: ["mediaant_joyra", "mediaant_mira"],
+  },
+];
+
+export function sourceById(id: string): Source | undefined {
+  return SOURCES.find((s) => s.id === id);
+}

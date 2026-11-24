@@ -1,0 +1,54 @@
+{
+  "name": "apollo247-media-network",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.27.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit",
+    "lint": "oxlint",
+    "lint:boundaries": "depcruise src",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:e2e": "playwright test",
+    "check": "pnpm typecheck && pnpm lint && pnpm lint:boundaries && pnpm format:check && pnpm test",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@google/genai": "3.6.1",
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "@swc/core": "1.16.22",
+    "@tailwindcss/turbopack": "4.3.5",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/jest-dom": "8.0.0",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.13",
+    "@types/jest": "30.0.0",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "dependency-cruiser": "18.9.0",
+    "husky": "9.1.7",
+    "jest": "30.5.2",
+    "jest-environment-jsdom": "30.5.2",
+    "lint-staged": "17.6.2",
+    "oxlint": "1.94.0",
+    "oxlint-tsgolint": "7.0.2008",
+    "prettier": "3.10.1",
+    "prettier-plugin-tailwindcss": "0.8.1",
+    "tailwindcss": "4.3.5",
+    "typescript": "7.0.2"
+  }
+}
